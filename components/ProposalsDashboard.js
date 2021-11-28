@@ -13,7 +13,7 @@ import firebase from 'firebase';
 import DocumentRow from '../components/DocumentRow';
 import { useCollectionOnce } from 'react-firebase-hooks/firestore';
 import Sidebar from './SideBar';
-
+import NewDocumentModal from './NewDocumentModal';
 
 const ProposalsDashboard = ({session}) => {
     const [ showModal, setShowModal ] = useState(false);
@@ -37,42 +37,6 @@ const ProposalsDashboard = ({session}) => {
         setShowModal(false);
       }
 
-      const modal = (
-        <Modal
-          size="sm"
-          active={showModal}
-          toggler={() => setShowModal(false)}
-        >
-          <ModalBody>
-            <input 
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              type="text"
-              className="outline-none w-full"
-              placeholder="Enter the name of document..."
-              onKeyDown={(e) => e.key === "Enter" && createDocument()}
-            />
-          </ModalBody>
-          <ModalFooter>
-            <Button
-              color="blue"
-              buttonType="link"
-              onClick={(e) => setShowModal(false)}
-              ripple="dark"
-            >
-              Cancel
-            </Button>
-            <Button
-              color="blue"
-              onClick={createDocument}
-              ripple="light"
-            >
-              Create
-            </Button>
-          </ModalFooter>
-        </Modal>
-      );
-
       return (
         <div>
           <Head>
@@ -80,7 +44,13 @@ const ProposalsDashboard = ({session}) => {
             <link rel="icon" href="/favicon.ico" />
           </Head>
           <Header session={session}/>
-          {modal}
+          <NewDocumentModal 
+            showModal={showModal}
+            input={input} 
+            createDocument={createDocument}
+            setInput={setInput}
+            setShowModal={setShowModal}
+          />
 
           <div className="flex flex-row min-h-screen">
             <Sidebar />
