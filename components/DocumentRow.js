@@ -8,7 +8,7 @@ const DocumentRow = ({ fileName, id, date}) => {
     const router = useRouter();
 
     return ( 
-        <div onClick={() => router.push(`/doc/${id}`)} className="flex items-center p-4 rouded-lg hover:bg-gray-100 cursor-pointer text-gray-700 text-sm">
+        <div onClick={() => router.push(`/doc/${id}`)} className="flex items-center p-4 rouded-lg hover:bg-gray-100 cursor-pointer text-gray-700 text-sm border-l-2 border-[#00b8d1] mb-2 shadow-md">
             <Icon name="article" size="3xl" color="blue" />
             <p className="flex-grow pl-5 w-10 pr-10 truncate">{fileName}</p>
             <p className="pr-5 text-sm">{date?.toDate().toLocaleDateString()}</p>

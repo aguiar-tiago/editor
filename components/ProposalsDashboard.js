@@ -1,12 +1,6 @@
-import React, { Component } from 'react';
 import Head from 'next/head'
 import Header from '../components/Header';
-import Button from "@material-tailwind/react/Button";
 import Icon from "@material-tailwind/react/Icon";
-import Image from 'next/image';
-import Modal from '@material-tailwind/react/Modal';
-import ModalBody from '@material-tailwind/react/ModalBody';
-import ModalFooter from '@material-tailwind/react/ModalFooter';
 import { useState } from 'react';
 import { db } from '../firebase';
 import firebase from 'firebase';
@@ -14,6 +8,7 @@ import DocumentRow from '../components/DocumentRow';
 import { useCollectionOnce } from 'react-firebase-hooks/firestore';
 import Sidebar from './SideBar';
 import NewDocumentModal from './NewDocumentModal';
+import NewDocument from './NewDocument';
 
 const ProposalsDashboard = ({session}) => {
     const [ showModal, setShowModal ] = useState(false);
@@ -55,32 +50,7 @@ const ProposalsDashboard = ({session}) => {
           <div className="flex flex-row min-h-screen">
             <Sidebar />
             <div className="flex flex-col mx-auto w-full">
-              <section className="bg-[#F8F9FA] pb-10 px-10">
-                <div className="max-w-3xl mx-auto">
-                  <div className="flex items-center justify-between py-6">
-                    <h2 className="text-gray-700 text-lg">Start a new document</h2>
-                    <Button
-                        color="gray"
-                        buttonType="outline"
-                        iconOnly={true}
-                        ripple="dark"
-                        className="h-20 w-20 border-0"
-                    >
-                        <Icon name="more_vert" size="3xl" />
-                    </Button>
-                  </div>
-        
-                  <div>
-                    <div onClick={(e) => setShowModal(true)} className="relative h-52 w-40 border-2 cursor-pointer hover:border-blue-700">
-                      <Image 
-                        src="https://links.papareact.com/pju"
-                        layout="fill"
-                      />
-                    </div>
-                    <p className="ml-2 mt-2 font-semibold text-sm text-gray-700">Blank</p>
-                  </div>
-                </div>
-              </section>
+              <NewDocument session={session} setShowModal={setShowModal}/>
 
               <section className="bg-white px-10 md:px-0">
                 <div className="max-w-3xl mx-auto py-8 text-sm text-gray-700">
