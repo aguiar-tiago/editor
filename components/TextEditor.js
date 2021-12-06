@@ -1,5 +1,5 @@
 import dynamic from "next/dynamic";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { EditorState, getDefaultKeyBinding, KeyBindingUtil, DefaultDraftBlockRenderMap, AtomicBlockUtils } from "draft-js";
 import { db } from "../firebase";
@@ -7,7 +7,7 @@ import { useRouter } from "next/dist/client/router";
 import { convertFromRaw, convertToRaw } from "draft-js";
 import { useSession } from "next-auth/client";
 import { useDocumentOnce } from "react-firebase-hooks/firestore";
-import { SignatureSuggestions } from './elements/signature/SignatureSuggestions';
+import SignatureSuggestions from './elements/signature/SignatureSuggestions';
 import { Signature } from './elements/signature/Signature';
 
 
@@ -27,6 +27,8 @@ function TextEditor() {
   const router = useRouter();
   const { id } = router.query;
   const [open, setOpen] = useState(false);
+  const [signee, setSignee] = useState();
+  const editorRef = useRef(null);
 
   const [snapshot] = useDocumentOnce(
     db.collection("userDocs").doc(session.user.email).collection("docs").doc(id)
@@ -85,13 +87,15 @@ function TextEditor() {
     return null;
   }
 
-  const addSignature = () => {
+  const addSignature = (person) => {
+    if(!person) return;
     const contentState = editorState.getCurrentContent();
     const contentStateWithEntity = contentState.createEntity(
       'signature',
       'MUTABLE',
       {
-        src: 'placeholder for more info later'
+        name: person.name,
+        id: person.id
       }
     )
 
@@ -107,11 +111,12 @@ function TextEditor() {
         ' '
       )
     );
+    editorRef.current.focus();
   }
 
   return (
-    <div className="bg-[#F8F9FA] min-h-screen pb-16">
-      <button onMouseDown={addSignature} className="bg-green p-4 border">Signature</button>
+    <div className="bg-[#F8F9FA] min-h-screen pb-16" ref={editorRef}>
+      <button onMouseDown={() => setOpen(true)} className="bg-green p-4 border">Signature</button>
       <Editor
         editorState={editorState}
         onEditorStateChange={onEditorStateChange}
@@ -121,7 +126,7 @@ function TextEditor() {
         keyBindingFn={myKeyBindingFn}
         blockRendererFn={mediaBlockRenderer}
       />
-      
+      <SignatureSuggestions showModal={open} shouldShowModal={setOpen} setSignee={setSignee} addSignature={addSignature}/>
     </div>
   );
 }
