@@ -6,6 +6,7 @@ import { useDocumentOnce } from "react-firebase-hooks/firestore";
 import { db } from "../../firebase";
 import Button from "@material-tailwind/react/Button";
 import TextEditor from "../../components/TextEditor";
+import DatabaseProvider from "../../components/contexts/DatabaseProvider";
 
 const Doc = () => {
     const [session] = useSession();
@@ -14,7 +15,7 @@ const Doc = () => {
 
     if(!session) return <Login />;
 
-    const [snapshot, loadingSnapshot] = useDocumentOnce(
+    const [snapshot] = useDocumentOnce(
         db
         .collection('userDocs')
         .doc(session.user.email)
@@ -22,9 +23,6 @@ const Doc = () => {
         .doc(id)
     );
 
-    // if(snapshot?.data()?.fileName) {
-    //     router.replace('/');
-    // }
 
     return ( 
         <div>
@@ -62,7 +60,9 @@ const Doc = () => {
                     alt="profile"
                 />
             </header>
-            <TextEditor />
+            <DatabaseProvider>
+                <TextEditor />
+            </DatabaseProvider>
         </div>
      );
 }
