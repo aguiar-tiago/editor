@@ -38,11 +38,11 @@ function TextEditor() {
     return 'not-handled';
   }
 
-  const mediaBlockRenderer = (block) => {
+  const signatureBlockRenderer = (block) => {
     if(block.getType() === 'atomic') {
       return {
         component: Signature,
-        editable: false
+        editable: false,
       }
     }
     return null;
@@ -53,7 +53,7 @@ function TextEditor() {
     const contentState = editorState.getCurrentContent();
     const contentStateWithEntity = contentState.createEntity(
       'signature',
-      'MUTABLE',
+      'IMMUTABLE',
       {
         name: person.name,
         id: person.id
@@ -85,7 +85,7 @@ function TextEditor() {
           editorClassName="mt-6 p-10 bg-white shadow-lg min-h-screen max-w-5xl mx-auto mb-12 border"
           handleKeyCommand={handleKeyCommand}
           keyBindingFn={myKeyBindingFn}
-          blockRendererFn={mediaBlockRenderer}
+          blockRendererFn={signatureBlockRenderer}
         />
         <SignatureSuggestions showModal={open} shouldShowModal={setOpen} setSignee={setSignee} addSignature={addSignature}/>
       </div>
