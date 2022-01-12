@@ -4,6 +4,7 @@ import { signOut } from "next-auth/client";
 
 const Header = ({session}) => {
 
+    console.log(session?.user?.image)
     return ( 
         <header className="flex items-center mx-auto sticky top-0 z-50 bg-white shadow-md">
             <div className="bg-gray-800 w-20 align-middle h-20 p-2">

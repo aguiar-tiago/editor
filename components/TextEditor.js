@@ -5,6 +5,8 @@ import { EditorState, getDefaultKeyBinding, KeyBindingUtil, DefaultDraftBlockRen
 import SignatureSuggestions from './elements/signature/SignatureSuggestions';
 import { Signature } from './elements/signature/Signature';
 import { DatabaseContext } from "./contexts/DatabaseProvider";
+import Icon from "@material-tailwind/react/Icon";
+import EditorSidebar from "./EditorSidebar";
 
 const Editor = dynamic(
   () => import("react-draft-wysiwyg").then((module) => module.Editor),
@@ -76,8 +78,7 @@ function TextEditor() {
   }
 
   return (
-      <div className="bg-[#F8F9FA] min-h-screen pb-16" ref={editorRef}>
-        <button onMouseDown={() => setOpen(true)} className="bg-green p-4 border">Signature</button>
+      <div className="bg-[#F8F9FA] min-h-screen pb-16 relative" ref={editorRef}>
         <Editor
           editorState={editorState}
           onEditorStateChange={onEditorStateChange}
@@ -87,6 +88,7 @@ function TextEditor() {
           keyBindingFn={myKeyBindingFn}
           blockRendererFn={signatureBlockRenderer}
         />
+        <EditorSidebar addSignature={() => setOpen(true)} />
         <SignatureSuggestions showModal={open} shouldShowModal={setOpen} setSignee={setSignee} addSignature={addSignature}/>
       </div>
   );

@@ -4,4 +4,11 @@
     .option {
         @apply cursor-pointer hover:bg-gray-100 p-2 transition duration-200 ease-out rounded-lg;
     }
+
+}
+.rdw-option-wrapper {
+    color: white;
+    padding: 15px!important;
+    border: none!important;
+    border-left: 2px solid #009DB2!important;
 }
